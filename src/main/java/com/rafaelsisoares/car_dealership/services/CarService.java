@@ -2,10 +2,12 @@ package com.rafaelsisoares.car_dealership.services;
 
 import com.rafaelsisoares.car_dealership.entities.Car;
 import com.rafaelsisoares.car_dealership.repositories.CarRepository;
+import com.rafaelsisoares.car_dealership.services.exceptions.CarNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CarService {
@@ -24,11 +26,16 @@ public class CarService {
         return carRepository.findAll();
     }
 
-    public Car findCarById(Long id) {
-        return carRepository.findById(id).orElseThrow(new CarNotFoundException());
+    public Car findCarById(Long id) throws CarNotFoundException {
+        Optional<Car> car = carRepository.findById(id);
+
+        if (car.isEmpty()) {
+            throw new CarNotFoundException();
+        }
+        return car.get();
     }
 
-    public Car updateCar(Long id, Car car) {
+    public Car updateCar(Long id, Car car) throws CarNotFoundException {
         Car carFromDb = findCarById(id);
 
         carFromDb.setBrand(car.getBrand());
