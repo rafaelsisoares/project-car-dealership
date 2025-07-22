@@ -4,6 +4,7 @@ import com.rafaelsisoares.car_dealership.controllers.dto.CarCreationDto;
 import com.rafaelsisoares.car_dealership.controllers.dto.CarDto;
 import com.rafaelsisoares.car_dealership.entities.Car;
 import com.rafaelsisoares.car_dealership.services.CarService;
+import com.rafaelsisoares.car_dealership.services.exceptions.CarNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,5 +33,20 @@ public class CarController {
         List<Car> cars = carService.findAllCars();
         return ResponseEntity.status(HttpStatus.OK)
                 .body(cars.stream().map(CarDto::fromEntity).toList());
+    }
+
+    @GetMapping("/{carId}")
+    public ResponseEntity<Car> findCarById(@PathVariable Long id) throws CarNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(carService.findCarById(id));
+    }
+
+    @PutMapping("/{carId}")
+    public ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody CarCreationDto newCar) throws CarNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(carService.updateCar(id, newCar.toEntity()));
+    }
+
+    @DeleteMapping("/{carId}")
+    public ResponseEntity<?> deleteCar(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 }
