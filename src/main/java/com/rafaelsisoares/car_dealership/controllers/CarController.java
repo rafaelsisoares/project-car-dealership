@@ -35,17 +35,17 @@ public class CarController {
                 .body(cars.stream().map(CarDto::fromEntity).toList());
     }
 
-    @GetMapping("/{carId}")
+    @GetMapping("/{id}")
     public ResponseEntity<Car> findCarById(@PathVariable Long id) throws CarNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(carService.findCarById(id));
     }
 
-    @PutMapping("/{carId}")
+    @PutMapping("/{id}")
     public ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody CarCreationDto newCar) throws CarNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(carService.updateCar(id, newCar.toEntity()));
     }
 
-    @DeleteMapping("/{carId}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCar(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
