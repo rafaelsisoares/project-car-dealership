@@ -1,11 +1,13 @@
 package com.rafaelsisoares.car_dealership.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "cars")
 public class Car {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String brand;
     private String model;
@@ -17,14 +19,12 @@ public class Car {
     public Car() {
     }
 
-    public Car(Long id,
-               String brand,
+    public Car(String brand,
                String model,
                String color,
                Integer year,
                String engineType,
                Double price) {
-        this.id = id;
         this.brand = brand;
         this.model = model;
         this.color = color;
