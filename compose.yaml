@@ -1,1 +1,9 @@
 services:
+  db:
+    image: mysql:9.2
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootDealership
+      - MYSQL_DATABASE=dealershipdb
+    ports:
+      - "3306:3306"
