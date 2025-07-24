@@ -15,12 +15,15 @@ public class Person {
     private String password;
     private String role;
 
-    public Person(String firstName, String role, String password, String username, String lastName) {
+    public Person() {
+    }
+
+    public Person(String firstName, String lastName, String username, String password, String role) {
         this.firstName = firstName;
-        this.role = role;
-        this.password = password;
-        this.username = username;
         this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.role = role;
     }
 
     public Long getId() {
