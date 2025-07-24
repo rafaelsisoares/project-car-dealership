@@ -51,7 +51,7 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePerson(@PathVariable Long id) {
+    public ResponseEntity<?> deletePerson(@PathVariable Long id) throws PersonNotFoundException {
         personService.deletePerson(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }

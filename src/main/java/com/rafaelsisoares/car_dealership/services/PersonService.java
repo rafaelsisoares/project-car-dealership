@@ -56,7 +56,8 @@ public class PersonService {
         return personRepository.save(personFromDb);
     }
 
-    public void deletePerson(Long id) {
-        personRepository.deleteById(id);
+    public void deletePerson(Long id) throws PersonNotFoundException {
+        Person person = findPersonById(id);
+        personRepository.delete(person);
     }
 }
