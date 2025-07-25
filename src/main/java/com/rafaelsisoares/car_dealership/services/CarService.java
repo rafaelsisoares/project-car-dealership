@@ -48,7 +48,8 @@ public class CarService {
         return carRepository.save(carFromDb);
     }
 
-    public void deleteCar(Long id) {
-        carRepository.deleteById(id);
+    public void deleteCar(Long id) throws CarNotFoundException {
+        Car car = findCarById(id);
+        carRepository.delete(car);
     }
 }
