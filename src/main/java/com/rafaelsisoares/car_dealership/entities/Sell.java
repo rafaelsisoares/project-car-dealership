@@ -1,19 +1,36 @@
 package com.rafaelsisoares.car_dealership.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "sells")
 public class Sell {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate date;
 
+    @OneToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
+
+    @OneToMany
+    @JoinColumn(name = "seller_id")
+    private Person seller;
+
+    @OneToMany
+    @JoinColumn(name = "customer_id")
+    private Person customer;
+
     public Sell() {};
 
-    public Sell(LocalDate date) {
+    public Sell(Person seller, Person customer, Car car, LocalDate date) {
+        this.car = car;
+        this.seller = seller;
+        this.customer = customer;
         this.date = date;
     }
 
@@ -23,6 +40,30 @@ public class Sell {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public Person getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Person seller) {
+        this.seller = seller;
+    }
+
+    public Person getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Person customer) {
+        this.customer = customer;
     }
 
     public LocalDate getDate() {
