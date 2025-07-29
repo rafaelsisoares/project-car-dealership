@@ -26,14 +26,12 @@ public class Person {
     public Person() {
     }
 
-    public Person(String firstName, String lastName, String username, String password, String role, List<Sell> sells, List<Sell> purchases) {
+    public Person(String firstName, String lastName, String username, String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.role = role;
-        this.sells = sells;
-        this.purchases = purchases;
     }
 
     public Long getId() {

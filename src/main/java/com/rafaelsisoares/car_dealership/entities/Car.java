@@ -16,7 +16,7 @@ public class Car {
     private String engineType;
     private Double price;
 
-    @OneToMany(mappedBy = "car")
+    @OneToOne(mappedBy = "car")
     private Sell sell;
 
     public Car() {
@@ -27,15 +27,13 @@ public class Car {
                String color,
                Integer year,
                String engineType,
-               Double price,
-               Sell sell) {
+               Double price) {
         this.brand = brand;
         this.model = model;
         this.color = color;
         this.year = year;
         this.engineType = engineType;
         this.price = price;
-        this.sell = sell;
     }
 
     public Long getId() {

@@ -17,11 +17,11 @@ public class Sell {
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "seller_id")
     private Person seller;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private Person customer;
 
