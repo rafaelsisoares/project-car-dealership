@@ -2,6 +2,8 @@ package com.rafaelsisoares.car_dealership.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "persons")
 public class Person {
@@ -14,6 +16,12 @@ public class Person {
     private String username;
     private String password;
     private String role;
+
+    @OneToMany(mappedBy = "seller")
+    private List<Sell> sells;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Sell> purchases;
 
     public Person() {
     }
@@ -72,5 +80,21 @@ public class Person {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<Sell> getSells() {
+        return sells;
+    }
+
+    public void setSells(List<Sell> sells) {
+        this.sells = sells;
+    }
+
+    public List<Sell> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Sell> purchases) {
+        this.purchases = purchases;
     }
 }
