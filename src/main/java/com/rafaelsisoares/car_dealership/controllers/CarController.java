@@ -50,4 +50,10 @@ public class CarController {
         carService.deleteCar(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
+
+    @PutMapping("/{id}/available")
+    public ResponseEntity<?> changeAvailability(@PathVariable Long id) throws CarNotFoundException {
+        carService.changeAvailability(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Disponibilidade alterada.");
+    }
 }
