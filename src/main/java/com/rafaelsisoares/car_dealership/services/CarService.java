@@ -44,6 +44,7 @@ public class CarService {
         carFromDb.setYear(car.getYear());
         carFromDb.setEngineType(car.getEngineType());
         carFromDb.setPrice(car.getPrice());
+        carFromDb.setAvailable(car.getAvailable());
 
         return carRepository.save(carFromDb);
     }
@@ -51,5 +52,11 @@ public class CarService {
     public void deleteCar(Long id) throws CarNotFoundException {
         Car car = findCarById(id);
         carRepository.delete(car);
+    }
+
+    public void changeAvailability(Long id) throws CarNotFoundException {
+        Car car = findCarById(id);
+        car.setAvailable(!car.getAvailable());
+        carRepository.save(car);
     }
 }

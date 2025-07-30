@@ -10,6 +10,6 @@ public record CarCreationDto(String brand,
                              Double price) {
 
     public Car toEntity() {
-        return new Car(brand, model, color, year, engineType, price);
+        return new Car(brand, model, color, year, engineType, price, true);
     }
 }

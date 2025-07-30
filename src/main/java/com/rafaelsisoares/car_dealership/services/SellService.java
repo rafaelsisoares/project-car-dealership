@@ -31,6 +31,7 @@ public class SellService {
         Person customer = personService.findPersonById(customerId);
 
         Sell newSell = new Sell(seller, customer, car, LocalDate.now());
+        carService.changeAvailability(carId);
         return sellRepository.save(newSell);
     }
 

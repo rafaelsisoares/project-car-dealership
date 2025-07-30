@@ -8,7 +8,8 @@ public record CarDto(Long id,
                      String color,
                      Integer year,
                      String engineType,
-                     Double price) {
+                     Double price,
+                     Boolean isAvailable) {
 
     public static CarDto fromEntity(Car car) {
         return new CarDto(car.getId(),
@@ -17,6 +18,7 @@ public record CarDto(Long id,
                 car.getColor(),
                 car.getYear(),
                 car.getEngineType(),
-                car.getPrice());
+                car.getPrice(),
+                car.getAvailable());
     }
 }

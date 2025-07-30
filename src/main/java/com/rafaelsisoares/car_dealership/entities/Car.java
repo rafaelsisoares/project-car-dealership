@@ -15,6 +15,7 @@ public class Car {
     private Integer year;
     private String engineType;
     private Double price;
+    private Boolean isAvailable;
 
     @OneToOne(mappedBy = "car")
     private Sell sell;
@@ -27,13 +28,15 @@ public class Car {
                String color,
                Integer year,
                String engineType,
-               Double price) {
+               Double price,
+               Boolean isAvailable) {
         this.brand = brand;
         this.model = model;
         this.color = color;
         this.year = year;
         this.engineType = engineType;
         this.price = price;
+        this.isAvailable = isAvailable;
     }
 
     public Long getId() {
@@ -90,6 +93,14 @@ public class Car {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Boolean getAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(Boolean available) {
+        isAvailable = available;
     }
 
     public Sell getSell() {
