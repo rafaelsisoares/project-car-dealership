@@ -4,6 +4,9 @@ import com.rafaelsisoares.car_dealership.entities.Person;
 import com.rafaelsisoares.car_dealership.repositories.PersonRepository;
 import com.rafaelsisoares.car_dealership.services.exceptions.PersonNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PersonService {
+public class PersonService implements UserDetailsService {
     private final PersonRepository personRepository;
 
     @Autowired
@@ -59,5 +62,10 @@ public class PersonService {
     public void deletePerson(Long id) throws PersonNotFoundException {
         Person person = findPersonById(id);
         personRepository.delete(person);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return personRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
     }
 }
