@@ -5,7 +5,9 @@ import com.rafaelsisoares.car_dealership.entities.Person;
 import com.rafaelsisoares.car_dealership.entities.Sell;
 import com.rafaelsisoares.car_dealership.repositories.SellRepository;
 import com.rafaelsisoares.car_dealership.services.exceptions.CarNotFoundException;
+import com.rafaelsisoares.car_dealership.services.exceptions.CarUnavailableException;
 import com.rafaelsisoares.car_dealership.services.exceptions.PersonNotFoundException;
+import com.rafaelsisoares.car_dealership.services.exceptions.SamePersonException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +27,21 @@ public class SellService {
         this.personService = personService;
     }
 
-    public Sell createSell(Long carId, Long sellerId, Long customerId) throws CarNotFoundException, PersonNotFoundException {
+    public Sell createSell(Long carId, Long sellerId, Long customerId)
+            throws CarNotFoundException,
+            PersonNotFoundException,
+            SamePersonException,
+            CarUnavailableException {
+        if (sellerId.equals(customerId)) {
+            throw new SamePersonException();
+        }
         Car car = carService.findCarById(carId);
         Person seller = personService.findPersonById(sellerId);
         Person customer = personService.findPersonById(customerId);
+
+        if (!car.getAvailable()) {
+            throw new CarUnavailableException();
+        }
 
         Sell newSell = new Sell(seller, customer, car, LocalDate.now());
         carService.changeAvailability(carId);
