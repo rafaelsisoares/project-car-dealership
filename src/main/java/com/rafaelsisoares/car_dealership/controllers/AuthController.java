@@ -1,6 +1,7 @@
 package com.rafaelsisoares.car_dealership.controllers;
 
 import com.rafaelsisoares.car_dealership.controllers.dto.AuthDto;
+import com.rafaelsisoares.car_dealership.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager) {
+    public AuthController(AuthenticationManager authenticationManager, TokenService tokenService) {
         this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
     }
 
     @PostMapping("/login")
@@ -28,6 +31,8 @@ public class AuthController {
 
         Authentication auth = authenticationManager.authenticate(usernamePassword);
 
-        return ResponseEntity.status(HttpStatus.OK).body("Bem-vindo " + auth.getName());
+        String token = tokenService.generateToken(auth.getName());
+
+        return ResponseEntity.status(HttpStatus.OK).body(token);
     }
 }
