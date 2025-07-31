@@ -1,6 +1,7 @@
 package com.rafaelsisoares.car_dealership.controllers;
 
 import com.rafaelsisoares.car_dealership.controllers.dto.AuthDto;
+import com.rafaelsisoares.car_dealership.controllers.dto.TokenDto;
 import com.rafaelsisoares.car_dealership.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,13 +27,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthDto authDto) {
+    public ResponseEntity<TokenDto> login(@RequestBody AuthDto authDto) {
         UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(authDto.username(), authDto.password());
 
         Authentication auth = authenticationManager.authenticate(usernamePassword);
 
         String token = tokenService.generateToken(auth.getName());
 
-        return ResponseEntity.status(HttpStatus.OK).body(token);
+        return ResponseEntity.status(HttpStatus.OK).body(new TokenDto(token));
     }
 }
