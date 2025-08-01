@@ -1,11 +1,9 @@
 package com.rafaelsisoares.car_dealership.controllers;
 
 import com.rafaelsisoares.car_dealership.controllers.dto.SellDto;
+import com.rafaelsisoares.car_dealership.entities.Sell;
 import com.rafaelsisoares.car_dealership.services.SellService;
-import com.rafaelsisoares.car_dealership.services.exceptions.CarNotFoundException;
-import com.rafaelsisoares.car_dealership.services.exceptions.CarUnavailableException;
-import com.rafaelsisoares.car_dealership.services.exceptions.PersonNotFoundException;
-import com.rafaelsisoares.car_dealership.services.exceptions.SamePersonException;
+import com.rafaelsisoares.car_dealership.services.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +39,21 @@ public class SellController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SellDto> findSellById(@PathVariable Long id) {
+    public ResponseEntity<SellDto> findSellById(@PathVariable Long id) throws SellNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(SellDto.fromEntity(sellService.findSellById(id)));
+    }
 
+    @PutMapping("/{sellId}/car/{carId}/seller/{sellerId}/customer/{customerId}")
+    public ResponseEntity<SellDto> updateSell(@PathVariable Long sellId,
+                                              @PathVariable Long carId,
+                                              @PathVariable Long sellerId,
+                                              @PathVariable Long customerId) throws CarNotFoundException, PersonNotFoundException, SellNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(SellDto.fromEntity(sellService.updateSell(sellId, carId, sellerId, customerId)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteSell(@PathVariable Long id) throws SellNotFoundException {
+        sellService.deleteSell(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Venda excluída");
     }
 }
