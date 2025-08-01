@@ -39,4 +39,9 @@ public class SellController {
                 sellService.findAllSells().stream().map(SellDto::fromEntity).toList()
         );
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<SellDto> findSellById(@PathVariable Long id) {
+
+    }
 }
