@@ -7,12 +7,15 @@ import com.rafaelsisoares.car_dealership.services.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/sells")
+@EnableMethodSecurity
 public class SellController {
     private final SellService sellService;
 
@@ -22,6 +25,7 @@ public class SellController {
     }
 
     @PostMapping("/car/{carId}/seller/{sellerId}/customer/{customerId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
     public ResponseEntity<SellDto> createSell(@PathVariable Long carId,
                                               @PathVariable Long sellerId,
                                               @PathVariable Long customerId)
@@ -32,6 +36,7 @@ public class SellController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('SELLER') or hasAuthority('ADMIN')")
     public ResponseEntity<List<SellDto>> findAllSells() {
         return ResponseEntity.status(HttpStatus.OK).body(
                 sellService.findAllSells().stream().map(SellDto::fromEntity).toList()
