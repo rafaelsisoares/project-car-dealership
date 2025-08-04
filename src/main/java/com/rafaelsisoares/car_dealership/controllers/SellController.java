@@ -27,6 +27,7 @@ public class SellController {
     }
 
     @PostMapping("/car/{carId}/seller/{sellerId}/customer/{customerId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
     public ResponseEntity<SellDto> createSell(@PathVariable Long carId,
                                               @PathVariable Long sellerId,
                                               @PathVariable Long customerId)
@@ -37,7 +38,7 @@ public class SellController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('SELLER')")
+    @PreAuthorize("hasAuthority('SELLER') or hasAuthority('ADMIN')")
     public ResponseEntity<List<SellDto>> findAllSells() {
         return ResponseEntity.status(HttpStatus.OK).body(
                 sellService.findAllSells().stream().map(SellDto::fromEntity).toList()
