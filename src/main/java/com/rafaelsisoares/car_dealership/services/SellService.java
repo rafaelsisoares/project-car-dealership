@@ -4,15 +4,13 @@ import com.rafaelsisoares.car_dealership.entities.Car;
 import com.rafaelsisoares.car_dealership.entities.Person;
 import com.rafaelsisoares.car_dealership.entities.Sell;
 import com.rafaelsisoares.car_dealership.repositories.SellRepository;
-import com.rafaelsisoares.car_dealership.services.exceptions.CarNotFoundException;
-import com.rafaelsisoares.car_dealership.services.exceptions.CarUnavailableException;
-import com.rafaelsisoares.car_dealership.services.exceptions.PersonNotFoundException;
-import com.rafaelsisoares.car_dealership.services.exceptions.SamePersonException;
+import com.rafaelsisoares.car_dealership.services.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SellService {
@@ -50,5 +48,34 @@ public class SellService {
 
     public List<Sell> findAllSells() {
         return sellRepository.findAll();
+    }
+
+    public Sell findSellById(Long id) throws SellNotFoundException {
+        Optional<Sell> sell = sellRepository.findById(id);
+
+        if(sell.isEmpty()) {
+            throw new SellNotFoundException();
+        }
+        return sell.get();
+    }
+
+    public Sell updateSell(Long sellId, Long carId, Long sellerId, Long customerId) throws SellNotFoundException, CarNotFoundException, PersonNotFoundException, SamePersonException {
+        if(sellerId.equals(customerId)) {
+            throw new SamePersonException();
+        }
+
+        Sell sellFromDb = findSellById(sellId);
+
+        sellFromDb.setCar(carService.findCarById(carId));
+        sellFromDb.setSeller(personService.findPersonById(sellerId));
+        sellFromDb.setCustomer(personService.findPersonById(customerId));
+
+        return sellRepository.save(sellFromDb);
+    }
+
+    public void deleteSell(Long id) throws SellNotFoundException {
+        Sell sell = findSellById(id);
+
+        sellRepository.delete(sell);
     }
 }
