@@ -59,6 +59,12 @@ public class SellService {
         return sell.get();
     }
 
+    public List<Sell> findSellsBySellerId(Long id) {
+        List<Sell> sells = findAllSells();
+
+        return sells.stream().filter(sell -> sell.getSeller().getId().equals(id)).toList();
+    }
+
     public Sell updateSell(Long sellId, Long carId, Long sellerId, Long customerId) throws SellNotFoundException, CarNotFoundException, PersonNotFoundException, SamePersonException {
         if(sellerId.equals(customerId)) {
             throw new SamePersonException();
