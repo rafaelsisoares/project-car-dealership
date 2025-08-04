@@ -59,7 +59,11 @@ public class SellService {
         return sell.get();
     }
 
-    public Sell updateSell(Long sellId, Long carId, Long sellerId, Long customerId) throws SellNotFoundException, CarNotFoundException, PersonNotFoundException {
+    public Sell updateSell(Long sellId, Long carId, Long sellerId, Long customerId) throws SellNotFoundException, CarNotFoundException, PersonNotFoundException, SamePersonException {
+        if(sellerId.equals(customerId)) {
+            throw new SamePersonException();
+        }
+
         Sell sellFromDb = findSellById(sellId);
 
         sellFromDb.setCar(carService.findCarById(carId));
