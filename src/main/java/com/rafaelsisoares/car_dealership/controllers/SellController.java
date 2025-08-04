@@ -44,19 +44,22 @@ public class SellController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
     public ResponseEntity<SellDto> findSellById(@PathVariable Long id) throws SellNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(SellDto.fromEntity(sellService.findSellById(id)));
     }
 
     @PutMapping("/{sellId}/car/{carId}/seller/{sellerId}/customer/{customerId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<SellDto> updateSell(@PathVariable Long sellId,
                                               @PathVariable Long carId,
                                               @PathVariable Long sellerId,
-                                              @PathVariable Long customerId) throws CarNotFoundException, PersonNotFoundException, SellNotFoundException {
+                                              @PathVariable Long customerId) throws CarNotFoundException, PersonNotFoundException, SellNotFoundException, SamePersonException {
         return ResponseEntity.status(HttpStatus.OK).body(SellDto.fromEntity(sellService.updateSell(sellId, carId, sellerId, customerId)));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteSell(@PathVariable Long id) throws SellNotFoundException {
         sellService.deleteSell(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Venda excluída");
