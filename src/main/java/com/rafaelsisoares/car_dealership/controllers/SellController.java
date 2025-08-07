@@ -49,6 +49,13 @@ public class SellController {
         return ResponseEntity.status(HttpStatus.OK).body(SellDto.fromEntity(sellService.findSellById(id)));
     }
 
+    @GetMapping("/seller/{sellerId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
+    public ResponseEntity<List<SellDto>> findSellsBySellerId(@PathVariable Long sellerId) throws PersonNotFoundException {
+        List<Sell> sells = sellService.findSellsBySellerId(sellerId);
+        return ResponseEntity.status(HttpStatus.OK).body(sells.stream().map(SellDto::fromEntity).toList());
+    }
+
     @PutMapping("/{sellId}/car/{carId}/seller/{sellerId}/customer/{customerId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<SellDto> updateSell(@PathVariable Long sellId,
