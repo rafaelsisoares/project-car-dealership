@@ -41,7 +41,7 @@ public class SellService {
             throw new CarUnavailableException();
         }
 
-        Sell newSell = new Sell(seller, customer, car, LocalDate.now());
+        Sell newSell = new Sell(car, seller, customer, LocalDate.now());
         carService.changeAvailability(carId);
         return sellRepository.save(newSell);
     }
@@ -57,6 +57,10 @@ public class SellService {
             throw new SellNotFoundException();
         }
         return sell.get();
+    }
+
+    public List<Sell> findSellsBySellerId(Long id) {
+        return sellRepository.findBySellerId(id);
     }
 
     public Sell updateSell(Long sellId, Long carId, Long sellerId, Long customerId) throws SellNotFoundException, CarNotFoundException, PersonNotFoundException, SamePersonException {

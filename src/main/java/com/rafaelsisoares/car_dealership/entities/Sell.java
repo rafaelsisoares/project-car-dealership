@@ -27,7 +27,7 @@ public class Sell {
 
     public Sell() {};
 
-    public Sell(Person seller, Person customer, Car car, LocalDate date) {
+    public Sell(Car car, Person seller, Person customer, LocalDate date) {
         this.car = car;
         this.seller = seller;
         this.customer = customer;
