@@ -35,6 +35,14 @@ public class CarService {
         return car.get();
     }
 
+    public List<Car> findCarsByBrand(String brand) {
+        return carRepository.findByBrand(brand);
+    }
+
+    public Car findCarByModel(String model) throws CarNotFoundException {
+        return carRepository.findByModel(model).orElseThrow();
+    }
+
     public Car updateCar(Long id, Car car) throws CarNotFoundException {
         Car carFromDb = findCarById(id);
 
