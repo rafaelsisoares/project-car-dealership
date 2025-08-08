@@ -47,6 +47,7 @@ public class CarController {
     }
 
     @GetMapping("/brand/{brand}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('CUSTOMER')")
     public ResponseEntity<List<CarDto>> findCarsByBrand(@PathVariable String brand) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 carService.findCarsByBrand(brand).stream().map(CarDto::fromEntity).toList()
@@ -54,6 +55,7 @@ public class CarController {
     }
 
     @GetMapping("/model/{model}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('CUSTOMER')")
     public ResponseEntity<CarDto> findCarByModel(@PathVariable String model) throws CarNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(CarDto.fromEntity(carService.findCarByModel(model)));
     }
