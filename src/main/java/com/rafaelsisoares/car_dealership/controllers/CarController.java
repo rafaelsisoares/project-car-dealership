@@ -42,14 +42,30 @@ public class CarController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('CUSTOMER')")
-    public ResponseEntity<Car> findCarById(@PathVariable Long id) throws CarNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(carService.findCarById(id));
+    public ResponseEntity<CarDto> findCarById(@PathVariable Long id) throws CarNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(CarDto.fromEntity(carService.findCarById(id)));
+    }
+
+    @GetMapping("/brand/{brand}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('CUSTOMER')")
+    public ResponseEntity<List<CarDto>> findCarsByBrand(@PathVariable String brand) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                carService.findCarsByBrand(brand).stream().map(CarDto::fromEntity).toList()
+        );
+    }
+
+    @GetMapping("/model/{model}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('CUSTOMER')")
+    public ResponseEntity<CarDto> findCarByModel(@PathVariable String model) throws CarNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(CarDto.fromEntity(carService.findCarByModel(model)));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody CarCreationDto newCar) throws CarNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(carService.updateCar(id, newCar.toEntity()));
+    public ResponseEntity<CarDto> updateCar(@PathVariable Long id, @RequestBody CarCreationDto newCar) throws CarNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                CarDto.fromEntity(carService.updateCar(id, newCar.toEntity()))
+                );
     }
 
     @DeleteMapping("/{id}")
