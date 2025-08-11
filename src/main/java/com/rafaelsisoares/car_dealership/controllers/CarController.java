@@ -42,8 +42,8 @@ public class CarController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('CUSTOMER')")
-    public ResponseEntity<Car> findCarById(@PathVariable Long id) throws CarNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(carService.findCarById(id));
+    public ResponseEntity<CarDto> findCarById(@PathVariable Long id) throws CarNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(CarDto.fromEntity(carService.findCarById(id)));
     }
 
     @GetMapping("/brand/{brand}")
@@ -62,8 +62,10 @@ public class CarController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody CarCreationDto newCar) throws CarNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(carService.updateCar(id, newCar.toEntity()));
+    public ResponseEntity<CarDto> updateCar(@PathVariable Long id, @RequestBody CarCreationDto newCar) throws CarNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                CarDto.fromEntity(carService.updateCar(id, newCar.toEntity()))
+                );
     }
 
     @DeleteMapping("/{id}")
